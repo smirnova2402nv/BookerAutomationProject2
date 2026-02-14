@@ -59,4 +59,13 @@ public class APIClient {
                 .response();
     }
 
+    public Response getBookingById(int bookingId) {
+        return getRequestSpec()
+                .when()//объявление того, что будем сейчас делать (Когда)
+                .get(ApiEndpoints.BOOKINGBYID.getPath() + bookingId) // Используем ENUM для эндпоинта /ping
+                .then()// Затем
+                .statusCode(200) // Ожидаемый статус-код 200 OK
+                .extract()//распоковываем
+                .response();// то что приходит в респонс
+    }
 }
