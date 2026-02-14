@@ -28,7 +28,7 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core:${jacksonCoreVersion}"
     implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonCoreVersion}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonCoreVersion}"
-
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonCoreVersion}"
 //
     testImplementation "io.qameta.allure:allure-junit5:${allureVersion}"
     testImplementation "io.qameta.allure:allure-rest-assured:${allureVersion}"
