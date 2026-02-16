@@ -1,6 +1,5 @@
 plugins {
     id("java")
-    id("io.qameta.allure") version "2.11.2"
 }
 
 group = "org.example"
@@ -32,7 +31,7 @@ dependencies {
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonCoreVersion}"
 //
     testImplementation "io.qameta.allure:allure-junit5:${allureVersion}"
-    implementation "io.qameta.allure:allure-rest-assured:${allureVersion}"
+    testImplementation "io.qameta.allure:allure-rest-assured:${allureVersion}"
 // lombok
     implementation "org.projectlombok:lombok:${lombokVersion}"
     implementation "org.projectlombok:lombok:${lombokVersion}"

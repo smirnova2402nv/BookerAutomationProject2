@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GetBookingByIdTests {
 
@@ -37,14 +38,17 @@ public class GetBookingByIdTests {
     public void testGetBookingById() throws Exception {
 
         // Тестовый ID
-        int bookingId = 12;
+        int bookingId = 15;
 
         // Выполняем запрос к эндпоинту /booking через APIClient
         Response response = apiClient.getBookingById(bookingId);
 
 
         //Проверяем, что статус код ответа равен 200
-        assertThat(response.getStatusCode()).isEqualTo(200);
+        step("Проверка, что статус-код ответа == 200", () ->
+                assertEquals(200, response.getStatusCode(),
+                        "Код ответа не совпал с ожидаемым. Ответ: Статус код \" + response.getStatusCode()")
+        );
         BookingResponse bookingResponse = objectMapper.readValue(response.asString(), BookingResponse.class);
 
         step("Проверка, что поле FirstName не пустое", () ->

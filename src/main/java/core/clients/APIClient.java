@@ -13,12 +13,10 @@ import io.restassured.specification.RequestSpecification;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import io.qameta.allure.restassured.AllureRestAssured;
 
 public class APIClient {
     private final String baseUrl;
     private String token;
-    private Filter allureFilter = new AllureRestAssured();
 
     public APIClient() {
         this.baseUrl = determineBaseUrl();
@@ -44,7 +42,6 @@ public class APIClient {
     // Настройка базовых параметров HTTP - запросов = спецификация в рест ажурд
     private RequestSpecification getRequestSpec() {
         return RestAssured.given()//Дано
-                .filter(allureFilter)
                 .baseUri(baseUrl)
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json")
