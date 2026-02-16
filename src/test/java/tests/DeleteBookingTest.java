@@ -55,7 +55,7 @@ public class DeleteBookingTest {
             int deleteBookingId = bookings.get(0).getBookingid();
 
             Response responseDeleteBooking = apiClient.deleteBooking(deleteBookingId);
-            step("Проверка, что статус-код ответа == 201", () ->
+            step("Проверка, что статус-код ответа == 201 после вызова метода удаления", () ->
                     assertEquals(201, responseDeleteBooking.getStatusCode(),
                             "Код ответа не совпал с ожидаемым. Ответ: Статус код " + responseDeleteBooking.getStatusCode())
             );
@@ -66,11 +66,12 @@ public class DeleteBookingTest {
             List<Booking> bookings2 = objectMapper.readValue(responseBody2, new TypeReference<List<Booking>>() {
             });
             Response responseGetBookingById = apiClient.getBookingById(deleteBookingId);
-            step("Проверка отсутствия удаленного id = %d в списке", () ->
-                    assertThat(bookings2)
-                            .extracting(Booking::getBookingid)
-                            .as("ID %d присутствует после удаления", deleteBookingId)
-                            .doesNotContain(deleteBookingId)
+            step("Проверка отсутствия в списке удаленного id = " + deleteBookingId, () -> {
+                        assertThat(bookings2)
+                                .extracting(Booking::getBookingid)
+                                .as("ID %d присутствует после удаления", deleteBookingId)
+                                .doesNotContain(deleteBookingId);
+                    }
             );
         }
     }
