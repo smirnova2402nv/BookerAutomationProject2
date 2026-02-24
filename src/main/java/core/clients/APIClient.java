@@ -1,11 +1,9 @@
 package core.clients;
 
-import core.models.ParametersGetBooking;
 import core.settings.ApiEndpoints;
 import io.restassured.RestAssured;
 import io.restassured.filter.Filter;
 import io.restassured.filter.FilterContext;
-import io.restassured.http.Cookie;
 import io.restassured.response.Response;
 import io.restassured.specification.FilterableRequestSpecification;
 import io.restassured.specification.FilterableResponseSpecification;
@@ -101,28 +99,100 @@ public class APIClient {
                 .response();// то что приходит в респонс
     }
 
-    // get запрос на эндпоинт /booking
-    public Response getBooking(String parametersGetBooking) {
+    // ПОЛУЧЕНИЕ ВСЕХ БРОНИРОВАНИЙ (БЕЗ ПАРАМЕТРОВ)
+    public Response getAllBookings() {
         log.info("Запущено получение списка всех бронирований GET /booking");
         return getRequestSpec()
-                .body(parametersGetBooking)
                 .log().all()
                 .when()
-                .log().all()
-                .get(ApiEndpoints.BOOKING.getPath()) // Используем ENUM для эндпоинта /booking
+                .get(ApiEndpoints.BOOKING.getPath())
                 .then()
                 .log().all()
-                .statusCode(200) // Ожидаемый статус-код 200 OK
                 .extract()
                 .response();
+    }
 
+    // ПОЛУЧЕНИЕ БРОНИРОВАНИЙ С ФИЛЬТРАЦИЕЙ ПО ИМЕНИ
+    public Response getBookingsByFirstName(String firstName) {
+        log.info("Запущена фильтрация бронирований по имени: {}", firstName);
+        return getRequestSpec()
+                .queryParam("firstname", firstName)
+                .log().all()
+                .when()
+                .get(ApiEndpoints.BOOKING.getPath())
+                .then()
+                .log().all()
+                .extract()
+                .response();
+    }
+
+    // ПОЛУЧЕНИЕ БРОНИРОВАНИЙ С ФИЛЬТРАЦИЕЙ ПО ФАМИЛИИ
+    public Response getBookingsByLastName(String lastName) {
+        log.info("Запущена фильтрация бронирований по фамилии: {}", lastName);
+        return getRequestSpec()
+                .queryParam("lastname", lastName)
+                .log().all()
+                .when()
+                .get(ApiEndpoints.BOOKING.getPath())
+                .then()
+                .log().all()
+                .extract()
+                .response();
+    }
+
+    // ПОЛУЧЕНИЕ БРОНИРОВАНИЙ С ФИЛЬТРАЦИЕЙ ПО ИМЕНИ И ФАМИЛИИ
+    public Response getBookingsByFirstAndLastName(String firstName, String lastName) {
+        log.info("Запущена фильтрация бронирований по имени {} и фамилии {}", firstName, lastName);
+        return getRequestSpec()
+                .queryParam("firstname", firstName)
+                .queryParam("lastname", lastName)
+                .log().all()
+                .when()
+                .get(ApiEndpoints.BOOKING.getPath())
+                .then()
+                .log().all()
+                .extract()
+                .response();
+    }
+
+    // ПОЛУЧЕНИЕ БРОНИРОВАНИЙ С ФИЛЬТРАЦИЕЙ ПО ДАТАМ
+    public Response getBookingsByDates(String checkin, String checkout) {
+        log.info("Запущена фильтрация бронирований по датам: checkin={}, checkout={}", checkin, checkout);
+        return getRequestSpec()
+                .queryParam("checkin", checkin)
+                .queryParam("checkout", checkout)
+                .log().all()
+                .when()
+                .get(ApiEndpoints.BOOKING.getPath())
+                .then()
+                .log().all()
+                .extract()
+                .response();
+    }
+
+    // ПОЛУЧЕНИЕ БРОНИРОВАНИЙ С ФИЛЬТРАЦИЕЙ ПО ВСЕМ ПАРАМЕТРАМ
+    public Response getBookingsByAllParams(String firstName, String lastName, String checkin, String checkout) {
+        log.info("Запущена фильтрация бронирований по всем параметрам: firstName={}, lastName={}, checkin={}, checkout={}",
+                firstName, lastName, checkin, checkout);
+        return getRequestSpec()
+                .queryParam("firstname", firstName)
+                .queryParam("lastname", lastName)
+                .queryParam("checkin", checkin)
+                .queryParam("checkout", checkout)
+                .log().all()
+                .when()
+                .get(ApiEndpoints.BOOKING.getPath())
+                .then()
+                .log().all()
+                .extract()
+                .response();
     }
 
     public Response getBookingById(int bookingId) {
         log.info("Запущен поиск бронирования по ID GET /booking/ " + bookingId);
         return getRequestSpec()
                 .when()//объявление того, что будем сейчас делать (Когда)
-                .get(ApiEndpoints.BOOKINGBYID.getPath() + bookingId) // Используем ENUM для эндпоинта /ping
+                .get(ApiEndpoints.BOOKING_BY_ID.getPath() + bookingId) // Используем ENUM для эндпоинта /ping
                 .then()
                 .log().all()// Затем
                 .extract()//распоковываем
@@ -135,7 +205,7 @@ public class APIClient {
         return getRequestSpec()
                 .pathParam("id", bookingId)
                 .when()
-                .delete(ApiEndpoints.BOOKINGBYID.getPath() + "{id}")
+                .delete(ApiEndpoints.BOOKING_BY_ID.getPath() + "{id}")
                 .then()
                 //.log().all()
                 .statusCode(201)
@@ -147,11 +217,11 @@ public class APIClient {
         log.info("Запущено создание бронирования POST /booking");
         return getRequestSpec()
                 .body(newBooking)
-                //.log().all()
+                .log().all()
                 .when()
                 .post(ApiEndpoints.BOOKING.getPath())
                 .then()
-                //.log().all()
+                .log().all()
                 .extract()
                 .response();
     }
@@ -163,7 +233,7 @@ public class APIClient {
                 .body(requestBody)
                 .log().all()
                 .when()
-                .patch(ApiEndpoints.BOOKINGBYID.getPath() + "{id}")
+                .patch(ApiEndpoints.BOOKING_BY_ID.getPath() + "{id}")
                 .then()
                 .log().all()
                 .extract()
@@ -175,7 +245,7 @@ public class APIClient {
                 .pathParam("id", bookingId)
                 .body(requestBody)
                 .when()
-                .put(ApiEndpoints.BOOKINGBYID.getPath() + "{id}")
+                .put(ApiEndpoints.BOOKING_BY_ID.getPath() + "{id}")
                 .then()
                 //.log().all()
                 .extract()
