@@ -28,18 +28,18 @@ public class BookingResponse {
 
     @JsonProperty("bookingdates")
     private BookingDates bookingDates;
-
+/*
     @JsonProperty("checkin")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate checkin;
+
+    private String checkin;
 
     @JsonProperty("checkout")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate checkout;
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private String checkout; */
 
     @JsonProperty("additionalneeds")
     private String additionalNeeds;
-
+/*
     public String getFirstName() {
         return firstName;
     }
@@ -102,5 +102,5 @@ public class BookingResponse {
 
     public void setAdditionalNeeds(String additionalNeeds) {
         this.additionalNeeds = additionalNeeds;
-    }
+    }*/
 }

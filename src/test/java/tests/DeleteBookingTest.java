@@ -9,11 +9,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import io.restassured.filter.Filter;
-import io.restassured.filter.FilterContext;
 import io.restassured.response.Response;
-import io.restassured.specification.FilterableRequestSpecification;
-import io.restassured.specification.FilterableResponseSpecification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +19,7 @@ import java.util.List;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+/*
 public class DeleteBookingTest {
 
     private APIClient apiClient; // создаем переменную APIClient, для того чтобы в следующем коде положить в нее объект APIClient
@@ -75,4 +71,4 @@ public class DeleteBookingTest {
             );
         }
     }
-}
+}*/

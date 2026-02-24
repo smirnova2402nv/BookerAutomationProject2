@@ -1,19 +1,26 @@
 package core.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Booking {
+    @JsonProperty("bookingid")
     private int bookingid;
-
+/*
     // Конструктор
     @JsonCreator
-    public Booking(@JsonProperty("bookingid") int bookingid) {
+    public BookingId(@JsonProperty("bookingid") int bookingid) {
         this.bookingid = bookingid;
     }
 
-    // Геттер
+   // Геттер
     public int getBookingid() {
         return bookingid;
     }
@@ -21,5 +28,5 @@ public class Booking {
     // Сеттер
     public void setBookingid(int bookingid) {
         this.bookingid = bookingid;
-    }
+    }*/
 }

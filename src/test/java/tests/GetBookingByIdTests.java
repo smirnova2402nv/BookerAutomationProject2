@@ -3,12 +3,17 @@ package tests;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import core.clients.APIClient;
+import core.models.BookingDates;
 import core.models.BookingResponse;
+import core.models.CreatedBooking;
+import core.models.NewBooking;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.restassured.response.Response;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,29 +22,51 @@ import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Slf4j
 public class GetBookingByIdTests {
 
-    private APIClient apiClient; // создаем переменную APIClient, для того чтобы в следующем коде положить в нее объект APIClient
+    private APIClient apiClient;
     private ObjectMapper objectMapper;
+    private CreatedBooking createdBooking;
+    private NewBooking newBooking;
 
     //Инициализация APi клиента перед каждым тестом
-    @BeforeEach //часть JUNIT, аннотация позволяющая перед каждым тестом создавать новый объект APIClient
+    @BeforeEach
     public void setup() {
         apiClient = new APIClient();
         objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
+
+        // Создаем объект Booking с необходимыми данными
+        newBooking = new NewBooking();
+        newBooking.setFirstname("Mike");
+        newBooking.setLastname("Line");
+        newBooking.setTotalprice(155);
+        newBooking.setDepositpaid(true);
+        newBooking.setBookingdates(new BookingDates("2024-01-01", "2024-01-05"));
+        newBooking.setAdditionalneeds("Breakfast");
+
+        try {
+            String requestBody = objectMapper.writeValueAsString(newBooking);
+            Response response = apiClient.createBooking(requestBody);
+
+            // Сохраняем созданное бронирование
+            String responseBody = response.getBody().asString();
+            createdBooking = objectMapper.readValue(responseBody, CreatedBooking.class);
+            log.info("Создано бронирование с ID: {}", createdBooking.getBookingid());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Ошибка при создании бронирования в BeforeEach: " + e.getMessage());
+        }
     }
 
     @Test
     @Feature("Booking")
     @Severity(SeverityLevel.CRITICAL)
     @Owner("Nadejda Smirnova")
-    @DisplayName("Получение существующего бронирования")
+    @DisplayName("Получение бронирования по ID ( GET /booking/{bookingId} )")
     public void testGetBookingById() throws Exception {
 
-        // Тестовый ID
-        int bookingId = 15;
-
+        int bookingId = 7;
         // Выполняем запрос к эндпоинту /booking через APIClient
         Response response = apiClient.getBookingById(bookingId);
 
@@ -81,5 +108,13 @@ public class GetBookingByIdTests {
                         .as("Поле BookingDates не должно быть пустым")
                         .isNotNull()
         );
+    }
+    @AfterEach
+    public void tearDown() {
+        //Удаляем созданное бронирование
+        apiClient.createToken("admin", "password123");
+        apiClient.deleteBooking(createdBooking.getBookingid());
+
+        assertThat(apiClient.getBookingById(createdBooking.getBookingid()).getStatusCode()).isEqualTo(404);
     }
 }
