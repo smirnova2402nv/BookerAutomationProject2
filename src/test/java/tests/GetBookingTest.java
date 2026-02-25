@@ -121,13 +121,14 @@ public class GetBookingTest {
                         .isNotEmpty()
         );
 
-        step("Проверка, что созданные бронирования есть в списке", () -> {
             List<Integer> foundIds = allBookings.stream()
                     .map(Booking::getBookingid)
                     .toList();
 
-            assertThat(foundIds).containsAll(createdBookingIds);
-        });
+            step("Проверка того, что созданные бронирования есть в списке", () ->
+                    assertThat(foundIds).containsAll(createdBookingIds)
+
+        );
         log.info("Завершены проверки");
     }
 
@@ -150,16 +151,15 @@ public class GetBookingTest {
                 }
         );
 
-        step("Проверка, что найдены оба бронирования с firstName Mike", () -> {
             List<Integer> foundIds = filteredBookings.stream()
                     .map(Booking::getBookingid)
                     .toList();
 
-            assertThat(foundIds)
+            step("Проверка того, что приходят id бронирований с переданным именем", () -> assertThat(foundIds)
                     .contains(createdBookingIds.get(0), createdBookingIds.get(1))
                     .doesNotContain(  // Проверяем, что НЕ содержит другие созданные бронирования
-                            createdBookingIds.get(2));
-        });
+                            createdBookingIds.get(2))
+        );
         log.info("Завершены проверки");
     }
 
@@ -181,16 +181,15 @@ public class GetBookingTest {
                 }
         );
         log.info("Запущены проверки");
-        step("Проверка, что найдено бронирование с lastName Andersen", () -> {
             List<Integer> foundIds = filteredBookings.stream()
                     .map(Booking::getBookingid)
                     .toList();
-            assertThat(foundIds).contains(
+            step("Проверка того, что приходят id бронирований с переданной фамилией", () -> assertThat(foundIds).contains(
                     createdBookingIds.get(1))
                     .doesNotContain(  // Проверяем, что НЕ содержит другие созданные бронирования
                             createdBookingIds.get(0),
-                            createdBookingIds.get(2));
-        });
+                            createdBookingIds.get(2))
+        );
         log.info("Завершены проверки");
     }
 
@@ -212,17 +211,15 @@ public class GetBookingTest {
                 }
         );
         log.info("Запущены проверки");
-        step("Проверка, что найдено бронирование с firstName Mike и lastName Andersen", () -> {
             List<Integer> foundIds = filteredBookings.stream()
                     .map(Booking::getBookingid)
                     .toList();
-            assertThat(foundIds)
+        step("Проверка того, что приходят id бронирований с переданным именем и фамилией", () -> assertThat(foundIds)
                     .contains(createdBookingIds.get(1))
                     .doesNotContain(  // Проверяем, что НЕ содержит другие созданные бронирования
                             createdBookingIds.get(0),
-                            createdBookingIds.get(2));
-
-        });
+                            createdBookingIds.get(2))
+        );
         log.info("Завершены проверки");
     }
 
@@ -248,10 +245,12 @@ public class GetBookingTest {
                 .map(Booking::getBookingid)
                 .toList();
         if (!foundIds.isEmpty()) {
-            assertThat(foundIds)
+            step("Проверка того, что приходит id бронирований с переданными датами в запросе", () ->
+                    assertThat(foundIds)
                     .as("Должно быть найдено бронирование Anna Cherri с датами 2024-03-20 - 2024-03-25")
                     .contains(createdBookingIds.get(2))
-                    .doesNotContain(createdBookingIds.get(0), createdBookingIds.get(1));
+                    .doesNotContain(createdBookingIds.get(0), createdBookingIds.get(1))
+            );
             log.info("Фильтрация по датам работает корректно");
         } else {
             log.warn("API не поддерживает фильтрацию по датам - получен пустой результат");
@@ -282,10 +281,12 @@ public class GetBookingTest {
                 .map(Booking::getBookingid)
                 .toList();
         if (!foundIds.isEmpty()) {
-            assertThat(foundIds)
+            step("Проверка того, что найдено бранирование соответствующее всем параметрам и отсутствуют другие", () ->
+                    assertThat(foundIds)
                     .as("Должно быть найдено бронирование ПО ВСЕМ параметрам")
                     .contains(createdBookingIds.get(2))
-                    .doesNotContain(createdBookingIds.get(0), createdBookingIds.get(1));
+                    .doesNotContain(createdBookingIds.get(0), createdBookingIds.get(1))
+            );
             log.info("Фильтрация по ВСЕМ параметрам работает корректно");
         } else {
             log.warn("API не поддерживает фильтрацию по датам - получен пустой результат");
