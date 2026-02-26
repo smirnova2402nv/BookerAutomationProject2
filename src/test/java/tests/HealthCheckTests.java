@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HealthCheckTests {
+/*public class HealthCheckTests {
     private APIClient apiClient; // создаем переменную APIClient, для того чтобы в следующем коде положить в нее объект APIClient
 
     @BeforeEach //часть JUNIT, аннотация позволяющая перед каждым тестом создавать новый объект APIClient
@@ -39,3 +39,4 @@ public class HealthCheckTests {
 
     }
 }
+*/

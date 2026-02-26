@@ -15,10 +15,15 @@ import java.time.LocalDate;
 @Builder
 public class BookingDates {
     @JsonProperty("checkin")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate checkin;
-
+    private String checkin;
     @JsonProperty("checkout")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate checkout;
+    private String checkout;
 }
+
+//    @JsonProperty("checkin")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+//    private LocalDate checkin;
+//
+//    @JsonProperty("checkout")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+//    private LocalDate checkout;

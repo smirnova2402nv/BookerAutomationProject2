@@ -4,7 +4,7 @@ public enum ApiEndpoints {
     AUTH("/auth"),
     PING("/ping"),
     BOOKING("/booking"),
-    BOOKINGBYID("/booking/");
+    BOOKING_BY_ID("/booking/");
 
     private final String path;
     //Конструктор
@@ -17,6 +17,6 @@ public enum ApiEndpoints {
     }
 
     public static String getBookingByIdPath(int id) {
-        return BOOKINGBYID.getPath() + "/" + id;
+        return BOOKING_BY_ID.getPath() + id;
     }
 }
